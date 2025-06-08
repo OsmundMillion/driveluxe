@@ -65,7 +65,7 @@ const SignIn = () => {
             <input
               type="text"
               name="username"
-              placeholder="e.g. john_doe"
+              placeholder="Ndzalama Mathye"
               value={form.username}
               onChange={handleChange}
               className="w-full px-4 py-2 bg-[#222A36] border border-slateGray rounded-lg text-pearlWhite placeholder-slateGray focus:outline-none focus:ring-2 focus:ring-luxeGold transition"
@@ -95,7 +95,7 @@ const SignIn = () => {
           {/* Sign In Button */}
           <button
             type="submit"
-            className="w-full py-2 rounded-lg bg-champagne text-midnight font-semibold hover:bg-luxeGold hover:scale-[1.02] transition-transform duration-200"
+            className="w-full py-2 rounded-lg bg-midnight text-midnight font-semibold hover:bg-luxeGold hover:scale-[1.02] transition-transform duration-200"
           >
             Sign In
           </button>

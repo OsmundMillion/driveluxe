@@ -163,7 +163,7 @@ const SignUp = () => {
           {/* Sign Up Button */}
           <button
             type="submit"
-            className="w-full py-2 rounded-lg bg-champagne text-midnight font-semibold hover:bg-luxeGold hover:scale-[1.02] transition-transform duration-200"
+            className="w-full py-2 rounded-lg bg-midnight text-midnight font-semibold hover:bg-luxeGold hover:scale-[1.02] transition-transform duration-200"
           >
             Sign Up
           </button>
@@ -172,7 +172,7 @@ const SignUp = () => {
         {/* Google Sign Up Button */}
         <div className="my-4 text-center">
           <button
-            className="w-full py-2 px-4 rounded-lg bg-white text-midnight flex items-center justify-center space-x-4 hover:bg-gray-200 transition"
+            className="w-full py-2 px-4 rounded-lg bg-midnight text-midnight flex items-center justify-center space-x-4 hover:bg-gray-200 transition"
             // Add Google OAuth functionality here
           >
             <FaGoogle className="text-red-500" />

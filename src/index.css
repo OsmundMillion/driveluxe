@@ -57,3 +57,41 @@
 .font-body {
   font-family: var(--font-body);
 }
+
+/* index.css or another global CSS file */
+
+/* 
+  We want to slide the entire .logos-track to the left by 50% of its width— 
+  since we duplicated the logos, moving by -50% will move exactly one full set of logos out of view.
+*/
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Apply the animation to the .logos-track element */
+.logos-track {
+  animation: slide 50s linear infinite;
+}
+
+.text-shine {
+  background: linear-gradient(90deg, #fff, #C6A15C, #fff);
+  background-size: 200%;
+  background-clip: text;             
+  -webkit-background-clip: text;     
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200%;
+  }
+  100% {
+    background-position: -200%;
+  }
+}
