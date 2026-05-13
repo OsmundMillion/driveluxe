@@ -1,37 +1,50 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { HiMenu, HiX } from "react-icons/hi";
+
+const NAV_LINKS = [
+  { label: "Home", to: "/" },
+  { label: "Cars", to: "/cars" },
+  { label: "Reservations", to: "/reservations" },
+  { label: "About", to: "/about" },
+];
 
 const Navbar = () => {
-  const [scrolling, setScrolling] = useState(false); // To track scroll
-  const [activeTab, setActiveTab] = useState<string>(""); // To track active tab
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const [scrolling, setScrolling] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Set active tab based on the URL path
   useEffect(() => {
-    const path = window.location.pathname;
-    setActiveTab(path); // Sets active tab based on current URL
-  }, [window.location.pathname]);
+    const handleScroll = () => setScrolling(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  // Handle navbar background change on scroll
-  const handleScroll = () => {
-    if (window.scrollY > 50) {
-      setScrolling(true); // Add background tint after scrolling
-    } else {
-      setScrolling(false); // Remove background tint when back at the top
-    }
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
-  // Event listener for scroll
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const isActive = (path: string) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
+  const linkClass = (path: string) =>
+    isActive(path)
+      ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
+      : "text-pearlWhite hover:text-champagne transition-colors duration-200";
 
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-20 transition-all duration-300 ${
-        scrolling ? "bg-midnight/80" : "bg-transparent"
+        scrolling || menuOpen ? "bg-midnight/90" : "bg-transparent"
       } backdrop-blur-sm`}
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -40,112 +53,93 @@ const Navbar = () => {
           DriveLuxe
         </Link>
 
-        {/* Nav links */}
-        <div className="space-x-6 text-base">
-          <Link
-            to="/"
-            className={`${
-              activeTab === "/"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Home
-            <span
-              className={`${
-                activeTab === "/"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
-          <Link
-            to="/cars"
-            className={`${
-              activeTab === "/cars"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Cars
-            <span
-              className={`${
-                activeTab === "/cars"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
-          <Link
-            to="/reservations"
-            className={`${
-              activeTab === "/reservations"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Reservations
-            <span
-              className={`${
-                activeTab === "/reservations"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
-          <Link
-            to="/contact"
-            className={`${
-              activeTab === "/contact"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Contact
-            <span
-              className={`${
-                activeTab === "/contact"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
-          <Link
-            to="/signin"
-            className={`${
-              activeTab === "/signin"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Sign In
-            <span
-              className={`${
-                activeTab === "/signin"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
-          <Link
-            to="/signup"
-            className={`${
-              activeTab === "/signup"
-                ? "text-luxeGold font-semibold border-b-2 border-luxeGold"
-                : "text-pearlWhite hover:text-champagne hover:scale-x-100 hover:border-b-2 hover:border-champagne transition-transform duration-300"
-            } relative inline-block`}
-          >
-            Sign Up
-            <span
-              className={`${
-                activeTab === "/signup"
-                  ? "w-full absolute bottom-0 left-0 transform scale-x-100"
-                  : "w-0 absolute bottom-0 left-0 transform scale-x-0"
-              } bg-luxeGold h-[2px] transition-all duration-300`}
-            ></span>
-          </Link>
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center space-x-6 text-base">
+          {NAV_LINKS.map(({ label, to }) => (
+            <Link key={to} to={to} className={`relative inline-block ${linkClass(to)}`}>
+              {label}
+            </Link>
+          ))}
+
+          {user ? (
+            <>
+              <span className="text-slateGray text-sm">Hi, {user.fullName.split(" ")[0]}</span>
+              {user.role === "admin" && (
+                <Link to="/admin/dashboard" className={`relative inline-block ${linkClass("/admin")}`}>
+                  Admin
+                </Link>
+              )}
+              <button
+                onClick={handleLogout}
+                className="text-pearlWhite hover:text-champagne transition-colors duration-200"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/signin" className={`relative inline-block ${linkClass("/signin")}`}>
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="bg-luxeGold text-midnight font-semibold px-4 py-1.5 rounded-full hover:opacity-90 transition"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden text-pearlWhite text-2xl"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? <HiX /> : <HiMenu />}
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-midnight/95 px-6 pb-6 flex flex-col space-y-4 text-base border-t border-slateGray/20">
+          {NAV_LINKS.map(({ label, to }) => (
+            <Link key={to} to={to} className={linkClass(to)}>
+              {label}
+            </Link>
+          ))}
+
+          {user ? (
+            <>
+              {user.role === "admin" && (
+                <Link to="/admin/dashboard" className={linkClass("/admin")}>
+                  Admin Dashboard
+                </Link>
+              )}
+              <span className="text-slateGray text-sm">Signed in as {user.fullName}</span>
+              <button
+                onClick={handleLogout}
+                className="text-left text-pearlWhite hover:text-champagne transition"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/signin" className={linkClass("/signin")}>
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="inline-block bg-luxeGold text-midnight font-semibold px-4 py-1.5 rounded-full hover:opacity-90 transition w-fit"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
