@@ -35,6 +35,7 @@ A frontend-only luxury car rental web application. Browse a curated fleet of pre
 ![Car Detail](./public/screenshots/cardetail.png)
 ![Reservations](./public/screenshots/reservations.png)
 ![Admin Dashboard](./public/screenshots/admindash.png)
+![About](./public/screenshots/aboutpage.png)
 
 ---
 
